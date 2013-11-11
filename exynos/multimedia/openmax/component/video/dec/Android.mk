@@ -20,4 +20,6 @@ LOCAL_STATIC_LIBRARIES := libsecosal
 LOCAL_CFLAGS += -DUSE_ANB
 endif
 
+LOCAL_GCC := true
+
 include $(BUILD_STATIC_LIBRARY)
