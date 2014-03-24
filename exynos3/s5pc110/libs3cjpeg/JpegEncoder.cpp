@@ -592,7 +592,7 @@ jpg_return_status JpegEncoder::makeExif (unsigned char *exifOut,
 
     *size = 10 + LongerTagOffest;
     tmp = *size - 2;    // APP1 Maker isn't counted
-    unsigned char size_mm[2] = {(tmp >> 8) & 0xFF, tmp & 0xFF};
+    unsigned char size_mm[2] = {static_cast<unsigned char>((tmp >> 8) & 0xFF), static_cast<unsigned char>(tmp & 0xFF)};
     memcpy(pApp1Start, size_mm, 2);
 
     ALOGD("makeExif X");
