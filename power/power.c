@@ -480,6 +480,7 @@ static void samsung_power_hint(struct power_module *module,
             ALOGV("%s: POWER_HINT_VSYNC", __func__);
             break;
         }
+#ifdef POWER_HINT_SET_PROFILE
         case POWER_HINT_SET_PROFILE: {
             int profile = *((intptr_t *)data);
 
@@ -488,11 +489,23 @@ static void samsung_power_hint(struct power_module *module,
             set_power_profile(samsung_pwr, profile);
             break;
         }
+#else // Fallback to AOSP style low power mode
+        case POWER_HINT_LOW_POWER: {
+            ALOGV("%s: POWER_HINT_LOW_POWER", __func__);
+
+            if (data) {
+                set_power_profile(samsung_pwr, PROFILE_POWER_SAVE);
+            } else {
+                set_power_profile(samsung_pwr, PROFILE_BALANCED);
+            }
+        }
+#endif
         default:
             break;
     }
 }
 
+#ifdef POWER_FEATURE_SUPPORTED_PROFILES
 static int samsung_get_feature(struct power_module *module __unused,
                                feature_t feature)
 {
@@ -502,6 +515,7 @@ static int samsung_get_feature(struct power_module *module __unused,
 
     return -1;
 }
+#endif
 
 static void samsung_set_feature(struct power_module *module, feature_t feature, int state)
 {
@@ -538,7 +552,9 @@ struct samsung_power_module HAL_MODULE_INFO_SYM = {
         .init = samsung_power_init,
         .setInteractive = samsung_power_set_interactive,
         .powerHint = samsung_power_hint,
+#ifdef POWER_FEATURE_SUPPORTED_PROFILES
         .getFeature = samsung_get_feature,
+#endif
         .setFeature = samsung_set_feature
     },
 
