@@ -2,7 +2,7 @@
  * Copyright (C) 2012 The Android Open Source Project
  * Copyright (C) 2014 The CyanogenMod Project
  * Copyright (C) 2014-2015 Andreas Schneider <asn@cryptomilk.org>
- * Copyright (C) 2014-2015 Christopher N. Hesse <raymanfx@gmail.com>
+ * Copyright (C) 2014-2016 Christopher N. Hesse <raymanfx@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@
 
 #include <hardware/hardware.h>
 #include <hardware/power.h>
+
+#include <lights.h>
 
 #define BOOSTPULSE_PATH "/sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse"
 
@@ -397,10 +399,12 @@ static void samsung_power_set_interactive(struct power_module *module, int on)
             } else {
                 samsung_pwr->touchkey_blocked = false;
                 sysfs_write(samsung_pwr->touchkey_power_path, "0");
+                sysfs_write(BUTTON_FILE, "0");
             }
         }
     } else if (!samsung_pwr->touchkey_blocked) {
         sysfs_write(samsung_pwr->touchkey_power_path, "1");
+        sysfs_write(BUTTON_FILE, "1");
     }
 
 out:

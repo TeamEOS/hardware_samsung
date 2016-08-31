@@ -22,6 +22,7 @@ LOCAL_MODULE := power.$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_SHARED_LIBRARIES := liblog libcutils
 LOCAL_SRC_FILES := power.c
+LOCAL_C_INCLUDES := hardware/samsung/liblights
 LOCAL_MODULE_TAGS := optional
 
 ifneq ($(TARGET_TAP_TO_WAKE_NODE),)
