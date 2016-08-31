@@ -29,13 +29,7 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 
-#include <hardware/lights.h>
-
-#define PANEL_FILE "/sys/class/backlight/panel/brightness"
-#define BUTTON_FILE "/sys/class/sec/sec_touchkey/brightness"
-#define LED_BLINK "/sys/class/sec/led/led_blink"
-
-#define COLOR_MASK 0x00ffffff
+#include "lights.h"
 
 static pthread_once_t g_init = PTHREAD_ONCE_INIT;
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
